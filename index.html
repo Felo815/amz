@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>المنتجات</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f2f2f2;
+    }
+
+    header {
+      background-color: #232f3e;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      flex-wrap: wrap;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    nav {
+      margin-top: 5px;
+      display: flex;
+      gap: 15px;
+      font-size: 14px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    /* لون الرابط النشط */
+    nav a.active {
+      color: #f0c14b; /* أصفر */
+    }
+
+    nav a:hover {
+      color: #f0c14b;
+    }
+
+    header input {
+      width: 300px;
+      padding: 7px;
+      border-radius: 4px;
+      border: none;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      header input {
+        width: 100%;
+      }
+
+      nav {
+        flex-direction: column;
+        gap: 5px;
+      }
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .product {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .product:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .product img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .product h3 {
+      font-size: 18px;
+      margin: 10px 0 5px;
+    }
+
+    .product .price {
+      color: green;
+      font-weight: bold;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .product button {
+      background-color: #f0c14b;
+      border: 1px solid #a88734;
+      padding: 8px 12px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .product button:hover {
+      background-color: #ddb347;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #232f3e;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <div class="logo">أمازون</div>
+      <br>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="offers.html">Offers</a>
+        <a href="electronics.html">Electronics</a>
+        <a href="clothing.html">Clothing</a>
+      </nav>
+    </div>
+    <input type="text" id="searchInput" placeholder="ابحث عن منتج..." />
+  </header>
+
+  <main id="productGrid" class="product-grid"></main>
+
+  <footer>
+    <p>حقوق النشر ©️ 2025 - أمازون</p>
+  </footer>
+
+  <script>
+    const products = [
+      { name: "سماعات رأس احترافية", price: "EGP 699.00", image: "hed.png", desc: "خصم 30%" },
+      { name: "لاب توب HP", price: "EGP 9,999.00", image: "lapto[.png", desc: "خصم 1000 جنيه" },
+      { name: "قميص قطن", price: "EGP 599.00", image: "قميص تاني.png", desc: "مريح جدا" },
+      { name: "سماعة بلوتوث", price: "EGP 299.99", image: "download (3).png", desc: "صوت عالي الجودة" },
+      { name: "ساعة ذكية", price: "EGP 499.99", image: "download.png", desc: "مراقبة اللياقة البدنية" },
+      { name: "باور بانك", price: "EGP 199.99", image: "downlo,ad.png", desc: "10000mAh" },
+      { name: "قميص قطن", price: "EGP 599.00", image: "قميص.png", desc: "مريح جدا" },
+      { name: "كابل USB", price: "EGP 59.99", image: "downlo.png", desc: "سريع الشحن" },
+      { name: "مكنه حلاقه", price: "EGP 199.99", image: "حلاقه.png", desc: "مكنه حلاقه الشعر يسهوله" },
+      { name: "كرسي", price: "EGP 2000.99", image: "مكتب.png", desc: "كرسي مريح جدا" },
+      { name: "لمبه", price: "EGP 20.99", image: "لميه.png", desc: "اضاءه قويه" },
+      { name: "شنطه ظهر", price: "EGP 155.99", image: "شنطه.png", desc: "خامة جيدة" }
+    ];
+
+    function renderProducts(searchTerm = "") {
+      const grid = document.getElementById("productGrid");
+      grid.innerHTML = "";
+
+      const filtered = products.filter(product =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+      filtered.forEach(product => {
+        const div = document.createElement("div");
+        div.className = "product";
+
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" />
+          <h3>${product.name}</h3>
+          <p>${product.desc}</p>
+          <span class="price">${product.price}</span>
+          <button onclick="window.location.href='https://felo815.github.io/o/'">أضف إلى السلة</button>
+        `;
+
+        grid.appendChild(div);
+      });
+    }
+
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      renderProducts(e.target.value);
+    });
+
+    renderProducts();
+
+    // تفعيل الكلاس 'active' للرابط النشط في التنقل
+    const navLinks = document.querySelectorAll('nav a');
+    const currentPath = window.location.pathname.split("/").pop();
+
+    navLinks.forEach(link => {
+      if(link.getAttribute('href') === currentPath){
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  </script>
+
+</body>
+</html>

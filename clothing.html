@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>الملابس</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f2f2f2;
+    }
+
+    header {
+      background-color: #232f3e;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      flex-wrap: wrap;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      margin-top: 5px;
+      display: flex;
+      gap: 15px;
+      font-size: 14px;
+    }
+
+    .nav-links a {
+      color: white !important;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a.active {
+      color: white !important;
+    }
+
+    .nav-links a:hover {
+      color: white !important;
+    }
+
+    header input {
+      width: 300px;
+      padding: 7px;
+      border-radius: 4px;
+      border: none;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      header input {
+        width: 100%;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        gap: 5px;
+      }
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .product {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .product:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .product img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .product h3 {
+      font-size: 18px;
+      margin: 10px 0 5px;
+    }
+
+    .product .price {
+      color: green;
+      font-weight: bold;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .product button {
+      background-color: #f0c14b;
+      border: 1px solid #a88734;
+      padding: 8px 12px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .product button:hover {
+      background-color: #ddb347;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #232f3e;
+      color: white;
+    }
+  
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <div class="logo">أمازون</div>
+      <br>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="offers.html">Offers</a>
+        <a href="electronics.html">Electronics</a>
+        <a href="clothing.html">Clothing</a>
+      </nav>
+    </div>
+    <input type="text" id="searchInput" placeholder="ابحث عن منتج..." />
+  </header>
+
+  <main id="productGrid" class="product-grid"></main>
+
+  <footer>
+    <p>حقوق النشر © 2025 - أمازون</p>
+  </footer>
+
+  <script>
+    const products = [
+      { name: "تيشيرت قطن رجالي", price: "EGP 199.00", image: "قطن.png", desc: "100% قطن - مقاسات متعددة" },
+      { name: "بنطلون جينز أزرق", price: "EGP 349.00", image: "بنطلون.png", desc: "ستايل كاجوال" },
+      { name: "فستان سهرة نسائي", price: "EGP 799.00", image: "فستان.png", desc: "موديل أنيق ومتوفر بألوان" },
+      { name: "بنطلون رجالي", price: "EGP 999.00", image: "car.png", desc: "موديل أنيق ومتوفر" },
+      { name: "جاكيت شتوي رجالي", price: "EGP 599.00", image: "جاااكت.png", desc: "بطانة دافئة" },
+      { name: "زي رياضي", price: "EGP 599.00", image: "رياضي.png", desc: "مريح جدا" },
+      { name: "قميص قطن", price: "EGP 599.00", image: "قميص.png", desc: "مريح جدا" },
+      { name: "قميص قطن", price: "EGP 599.00", image: "قميص تاني.png", desc: "مريح جدا" },
+      { name: "جزمه كلاسيك", price: "EGP 299.00", image: "جزمه .png", desc: "مريح جدا" },
+      { name: "جزمه اطفال", price: "EGP 299.00", image: "جزمه اطفال.png", desc: "شكلها رائع" },
+      { name: "بنطلون شبابي", price: "EGP 899.00", image: "بنطلون شبابي .png", desc: "رائع" },
+    ];
+
+    function renderProducts(searchTerm = "") {
+      const grid = document.getElementById("productGrid");
+      grid.innerHTML = "";
+
+      const filtered = products.filter(product =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+      filtered.forEach(product => {
+        const div = document.createElement("div");
+        div.className = "product";
+
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" />
+          <h3>${product.name}</h3>
+          <p>${product.desc}</p>
+          <span class="price">${product.price}</span>
+          <button onclick="window.location.href='https://felo815.github.io/o/">أضف إلى السلة</button>
+        `;
+
+        grid.appendChild(div);
+      });
+    }
+
+    renderProducts();
+  </script>
+
+</body>
+</html>
